@@ -1,5 +1,6 @@
 create database SQL_Task_1;
 
+-- Creating all the required tables
 -- Books: PK = isbn
 CREATE TABLE books (
   isbn VARCHAR(20) PRIMARY KEY,
@@ -59,8 +60,9 @@ ALTER TABLE loans
 
 ALTER TABLE loans
   ADD CONSTRAINT fk_loans_members FOREIGN KEY (member_code) REFERENCES members(member_code);
-  
 
+
+-- Inserting Dummy data to each table(I used ai to generate these data and then inserted in each table)
   INSERT INTO books (isbn, title, publication_year, publisher_name) VALUES
 ('978-0-111111-0', 'Intro to Databases', 2020, 'Acme Publishing'),
 ('978-0-222222-0', 'Learning SQL', 2018, 'Beta Books'),
@@ -102,6 +104,18 @@ INSERT INTO loans (copy_barcode, member_code, borrow_date, due_date, return_date
 ('BCODE-0003', 'M002', '2025-09-05', '2025-09-19', '2025-09-14', 'Rina'),
 ('BCODE-0002', 'M003', '2025-09-10', '2025-09-24', NULL, 'Suman');
 
+
+-- Since the above tables donot have any multivalued rows it's already in 1NF
+
+-- Since the above each tables also use single column primary keys so there are no partial dependency left, hence it's also in 2NF
+
+-- Since we have publishers details in books table and also staff details in loans table, 
+-- which can cause update anomalies, a non key attributes here may derive other non key attributes
+-- showing transitive dependency, Hence not in 3NF
+
+
+-- Seperating out the required tables
+
 -- Create publishers
 CREATE TABLE publishers (
   publisher_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -120,7 +134,7 @@ UPDATE books b
 JOIN publishers p ON b.publisher_name = p.name
 SET b.publisher_id = p.publisher_id;
 
--- Drop the old publisher_name column (only after verifying publisher_id is set)
+-- Drop the old publisher_name column
 ALTER TABLE books DROP COLUMN publisher_name;
 
 -- Add FK
@@ -155,6 +169,8 @@ ALTER TABLE loans DROP COLUMN staff_name;
 ALTER TABLE loans
   ADD CONSTRAINT fk_loans_staff FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE SET NULL;
 
+
+-- Since we have seperated the table causing transitive dependency, now each table's non key attributes depends only on key attribute, Hence in 3NF
 
 
 
