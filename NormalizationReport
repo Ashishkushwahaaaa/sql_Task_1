@@ -1,1 +1,26 @@
+Normalization Report: Library Management System:
 
+First Normal Form (1NF)
+    Created books, authors, members, copies, loans tables
+    No multi-valued attributes.
+    Each columns holds atomic values.
+    Unique primary keys defined for all table.
+
+Second Normal Form (2NF)
+    book_authors table introduced with composite PK to avoid storing multiple authors directly in books
+    Every non-key attribute is fully dependent on the whole primary key.
+    No partial dependency remains.
+
+Third Normal Form (3NF)
+    Moved publisher_name from books into new table publishers
+    Replaced staff_name in loans with staff_id referencing staff table.
+    No non-key attribute depends on another non-key attribute.
+    All attributes depend only on the primary key of their table.
+
+FINAL SCHEMA 3NF
+  Entities: 
+      publishers, books, authors, book_authors, members, copies, loans, staff.
+  Benefits:
+      Data redundancy reduced.
+      Referential integrity maintained through foreign keys.
+      Anomalies (update, insertion, deletion) removed.
